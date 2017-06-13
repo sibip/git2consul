@@ -96,12 +96,12 @@ describe('Config Validation', function() {
     }
   });
 
-  it ('should reject a repo with a non-writeable local_store', function() {
+  it ('should reject a repo with a non-writable local_store', function() {
     try {
       fs.writeFileSync('/tmp/not_a_directory', 'oops');
       var repo = new Repo({'name': 'non_directory_local_store_repo', 'url': 'http://www.github.com/',
         'local_store':'/tmp/not_a_directory', 'branches': ['master']});
-      should.fail("Repo with non-writeable local_store should throw an exception");
+      should.fail("Repo with non-writable local_store should throw an exception");
     } catch(e) {
       e.message.should.equal('/tmp/not_a_directory is not a directory');
     }
@@ -110,11 +110,11 @@ describe('Config Validation', function() {
       rimraf.sync('/tmp/test_directory');
       fs.mkdirSync('/tmp/test_directory');
       fs.chmodSync('/tmp/test_directory', parseInt(555, 8));
-      var repo = new Repo({'name': 'unwriteable_directory', 'url': 'http://www.github.com/',
+      var repo = new Repo({'name': 'unwritable_directory', 'url': 'http://www.github.com/',
         'local_store':'/tmp/test_directory', 'branches': ['master']});
-      should.fail("Repo with non-writeable directory should throw an exception");
+      should.fail("Repo with non-writable directory should throw an exception");
     } catch(e) {
-      e.message.should.equal('/tmp/test_directory is not writeable');
+      e.message.should.equal('/tmp/test_directory is not writable');
     } finally {
       rimraf.sync('/tmp/test_directory');
     }
